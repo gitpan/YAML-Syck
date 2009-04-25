@@ -13,7 +13,7 @@ use 5.00307;
 use Exporter;
 
 BEGIN {
-    $VERSION = '1.06';
+    $VERSION = '1.07';
     @EXPORT  = qw( Dump Load DumpFile LoadFile );
     @ISA     = qw( Exporter );
 
@@ -139,7 +139,7 @@ YAML::Syck - Fast, lightweight YAML loader and dumper
 
 =head1 VERSION
 
-This document describes version 1.06 of YAML::Syck, released April 25, 2009.
+This document describes version 1.07 of YAML::Syck, released April 25, 2009.
 
 =head1 SYNOPSIS
 
