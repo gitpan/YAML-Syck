@@ -7,7 +7,6 @@ gram.c
 gram.h
 handler.c
 implicit.c
-inc/attributes.pm
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
@@ -18,6 +17,8 @@ inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
+inc/parent.pm
+inc/PerlIO.pm
 inc/Test/Builder.pm
 inc/Test/Builder/Module.pm
 inc/Test/More.pm
@@ -61,5 +62,6 @@ t/leak.t
 t/TestYAML.pm
 t/yaml-blessed-ref.t
 t/yaml-implicit-warnings.t
+t/yaml-str-colon-first.t
 t/yaml-tie.t
 token.c
