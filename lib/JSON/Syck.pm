@@ -5,7 +5,7 @@ use Exporter;
 use YAML::Syck ();
 
 BEGIN {
-    $VERSION    = '0.30_01';
+    $VERSION    = '0.31';
     @EXPORT_OK  = qw( Load Dump LoadFile DumpFile );
     @ISA        = 'Exporter';
     *Load       = \&YAML::Syck::LoadJSON;
@@ -49,7 +49,7 @@ __END__
 
 =head1 NAME
 
-JSON::Syck - JSON is YAML (but consider using JSON::XS instead!)
+JSON::Syck - JSON is YAML (but consider using L<JSON::XS> instead!)
 
 =head1 SYNOPSIS
 
