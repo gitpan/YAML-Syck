@@ -7,17 +7,18 @@ use vars qw(
     $Headless $SortKeys $SingleQuote
     $ImplicitBinary $ImplicitTyping $ImplicitUnicode 
     $UseCode $LoadCode $DumpCode
-    $DeparseObject
+    $DeparseObject $LoadBlessed
 );
 use 5.006;
 use Exporter;
 
 BEGIN {
-    $VERSION = '1.10';
+    $VERSION = '1.10_01';
     @EXPORT  = qw( Dump Load DumpFile LoadFile );
     @ISA     = qw( Exporter );
 
     $SortKeys = 1;
+    $LoadBlessed = 1;
 
     local $@;
     eval {
@@ -104,27 +105,28 @@ sub DumpFile {
         }
     }
     else {
-        local *FH;
-        open FH, "> $file" or die "Cannot write to $file: $!";
+        open(my $fh, '>', $file) or die "Cannot write to $file: $!";
         if ($#_) {
-            print FH YAML::Syck::DumpYAML($_) for @_;
+            print $fh YAML::Syck::DumpYAML($_) for @_;
         }
         else {
-            print FH YAML::Syck::DumpYAML($_[0]);
+            print $fh YAML::Syck::DumpYAML($_[0]);
         }
-        close FH;
+        close $fh;
     }
 }
 
 sub LoadFile {
     my $file = shift;
+    if(!-e $file || -z $file ) {
+        die("Cannot load empty file");
+    };
     if ( _is_openhandle($file) ) {
         Load(do { local $/; <$file> });
     }
     else {
-        local *FH;
-        open FH, "< $file" or die "Cannot read from $file: $!";
-        Load(do { local $/; <FH> });
+        open(my $fh, '<', $file) or die "Cannot read from $file: $!";
+        Load(do { local $/; <$fh> });
     }
 }
 
@@ -155,25 +157,6 @@ YAML::Syck - Fast, lightweight YAML loader and dumper
     # A string with multiple YAML streams in it
     $yaml = Dump(@data);
     @data = Load($yaml);
-
-=head1 WARNING
-
-This module has L<a lot of known
-issues|https://rt.cpan.org/Public/Dist/Display.html?Name=YAML-Syck>
-and hasn't been actively maintained since 2007. If you encounter an
-issue with it probably won't be fixed unless you L<offer up a
-patch|http://github.com/avar/YAML-Syck> in Git that's ready for
-release.
-
-Consider using L<YAML::XS> instead, or not using YAML at all. YAML is
-falling out of style in the Perl community in favor of simpler formats
-like JSON, which don't suffer from the bugs and annoying
-incompatibilities that plague the ambitious YAML format.
-
-There are still some good reasons to use this module, such as better
-interoperability with other syck wrappers (like Ruby's), or some edge
-case of YAML's syntax that it handles better. Maybe it'll work
-perfectly for you, but if it doesn't you may be in for some pain.
 
 =head1 DESCRIPTION
 
@@ -236,6 +219,11 @@ each of them defaults to false.
 Setting C<$YAML::Syck::UseCode> to a true value is equivalent to setting
 both C<$YAML::Syck::LoadCode> and C<$YAML::Syck::DumpCode> to true.
 
+=head2 $YAML::Syck::LoadBlessed
+
+Defaults to true. Setting this to a false value will prevent C<Load> from
+blessing tag names that do not begin with C<!!perl> or C<!perl>; see below.
+
 =head1 BUGS
 
 Dumping Glob/IO values does not work yet.
@@ -252,7 +240,23 @@ Tag names such as C<!!perl/hash:Foo> is blessed into the package C<Foo>, but
 the C<!hs/foo> and C<!!hs/Foo> tags are blessed into C<hs::Foo>.  Note that
 this holds true even if the tag contains non-word characters; for example,
 C<!haskell.org/Foo> is blessed into C<haskell.org::Foo>.  Please use
-L<Class::Rebless> to cast it into other user-defined packages.
+L<Class::Rebless> to cast it into other user-defined packages. You can also
+set the LoadBlessed flag false to disable blessing tag names that do not begin
+with C<!!perl> or C<!perl>.
+
+This module has L<a lot of known
+issues|https://rt.cpan.org/Public/Dist/Display.html?Name=YAML-Syck>
+and has only been semi-actively maintained since 2007. If you
+encounter an issue with it probably won't be fixed unless you L<offer
+up a patch|http://github.com/avar/YAML-Syck> in Git that's ready for
+release.
+
+There are still good reasons to use this module, such as better
+interoperability with other syck wrappers (like Ruby's), or some edge
+case of YAML's syntax that it handles better. It'll probably work
+perfectly for you, but if it doesn't you may want to look at
+L<YAML::XS>, or perhaps at looking another serialization format like
+L<JSON>.
 
 =head1 SEE ALSO
 

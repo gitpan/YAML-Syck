@@ -5,7 +5,7 @@ use Exporter;
 use YAML::Syck ();
 
 BEGIN {
-    $VERSION    = '0.33';
+    $VERSION    = '0.34';
     @EXPORT_OK  = qw( Load Dump LoadFile DumpFile );
     @ISA        = 'Exporter';
     *Load       = \&YAML::Syck::LoadJSON;
@@ -18,23 +18,24 @@ sub DumpFile {
         print {$file} YAML::Syck::DumpJSON($_[0]);
     }
     else {
-        local *FH;
-        open FH, "> $file" or die "Cannot write to $file: $!";
-        print FH YAML::Syck::DumpJSON($_[0]);
-        close FH;
+        open(my $fh, '>',  $file) or die "Cannot write to $file: $!";
+        print $fh YAML::Syck::DumpJSON($_[0]);
+        close $fh;
     }
 }
 
 
 sub LoadFile {
     my $file = shift;
+    if(!-e $file || -z $file) {
+        die("Cannot load empty file");
+    }
     if ( YAML::Syck::_is_openhandle($file) ) {
         YAML::Syck::LoadJSON(do { local $/; <$file> });
     }
     else {
-        local *FH;
-        open FH, "< $file" or die "Cannot read from $file: $!";
-        YAML::Syck::LoadJSON(do { local $/; <FH> });
+        open(my $fh, '<', $file) or die "Cannot read from $file: $!";
+        YAML::Syck::LoadJSON(do { local $/; <$fh> });
     }
 }
 
