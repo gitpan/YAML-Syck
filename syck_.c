@@ -2,7 +2,7 @@
  * syck.c
  *
  * $Author: why $
- * $Date: 2005-01-01 10:06:25 +0800 (六, 01  1 2005) $
+ * $Date: 2005-01-01 10:06:25 +0800 (.., 01  1 2005) $
  *
  * Copyright (C) 2003 why the lucky stiff
  */
@@ -496,34 +496,26 @@ syck_parse( SyckParser *p )
 void
 syck_default_error_handler( SyckParser *p, char *msg )
 {
-    printf( "Error at [Line %d, Col %d]: %s\n",
+    printf( "Error at [Line %d, Col %ld]: %s\n",
         p->linect,
         p->cursor - p->lineptr,
         msg );
 }
 
-int syck_is_a_number(char* str, long len) {
+int syck_str_is_unquotable_integer(char* str, long len) {
 	int idx;
-	char seen_decimal = 0;
-	char c;
 
 	if(!str) return 0; /* Don't parse null strings */
 	if(len < 1) return 0; /* empty strings can't be numbers */
+	if(len > 9) return 0; /* Ints larger than 9 digits (32bit) might not portable. Force a string. */
+
+	if(str[0] == '-' && (len < 2 || str[1] > '9' || str[1] < '1')) return 0;
+	if(str[0] > '9' || str[0] < '1') return 0;
 
 	/* Look for illegal characters */
-	for ( idx = 0; idx < len; idx++ ) {
-		c = str[idx];
-
-		if(c > '9' || c < '.' || c == '/' )
-			return 0; /* Number can only have 0..9 and . */
-		if(c == '.') {
-			if(seen_decimal) return 0; /* Numbers can't have 2 .'s in them */
-			if(idx == 0) return 0; /* has to have a leading 0 at least for floats */
-			seen_decimal = 1;
-		}
+	for ( idx = 1; idx < len; idx++ ) {
+		if(!isdigit(str[idx])) return 0;
 	}
-
-	if(len > 1 && str[0] == '0' && str[1] != '.') return 0; /* Trap hex/octal */
 
 	return 1;
 }
