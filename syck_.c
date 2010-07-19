@@ -2,7 +2,7 @@
  * syck.c
  *
  * $Author: why $
- * $Date: 2005-01-01 10:06:25 +0800 (.., 01  1 2005) $
+ * $Date: 2005-01-01 10:06:25 +0800 (六, 01  1 2005) $
  *
  * Copyright (C) 2003 why the lucky stiff
  */
