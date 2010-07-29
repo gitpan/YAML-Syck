@@ -1028,7 +1028,7 @@ yaml_syck_emitter_handler
             syck_emit_scalar(e, OBJOF("str"), SCALAR_STRING, 0, 0, 0, SvPV_nolen(sv), len);
         }
     }
-    else if (looks_like_number(sv)) {
+    else if (SvNIOK(sv)) {
     	if(SvIOK(sv) && syck_str_is_unquotable_integer(SvPV_nolen(sv), sv_len(sv)) ) { /* int detection. */
     		syck_emit_scalar(e, OBJOF("str"), SCALAR_NUMBER, 0, 0, 0, SvPV_nolen(sv), sv_len(sv));
         } else { /* We need to quote this thing even though it appears a number. Only small integers round trip correctly & portably. */
@@ -1116,6 +1116,10 @@ yaml_syck_emitter_handler
 #else
 
                 /* This following code is mostly copypasted from Storable */
+
+#if PERL_VERSION < 8
+		syck_emit_scalar(e, OBJOF("tag:!perl:code:"), SCALAR_QUOTED, 0, 0, 0, "{ \"DUMMY\" }", 11);
+#else
                 if ( !dump_code ) {
                     syck_emit_scalar(e, OBJOF("tag:!perl:code:"), SCALAR_QUOTED, 0, 0, 0, "{ \"DUMMY\" }", 11);
                 }
@@ -1172,6 +1176,7 @@ yaml_syck_emitter_handler
 
                     /* END Storable */
                 }
+#endif
 #endif
                 *tag = '\0';
                 break;

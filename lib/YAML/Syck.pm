@@ -13,7 +13,7 @@ use 5.006;
 use Exporter;
 
 BEGIN {
-    $VERSION = '1.10_05';
+    $VERSION = '1.10_06';
     @EXPORT  = qw( Dump Load DumpFile LoadFile );
     @ISA     = qw( Exporter );
 
@@ -107,10 +107,10 @@ sub DumpFile {
     else {
         open(my $fh, '>', $file) or die "Cannot write to $file: $!";
         if ($#_) {
-            print $fh YAML::Syck::DumpYAML($_) for @_;
+            print {$fh} YAML::Syck::DumpYAML($_) for @_;
         }
         else {
-            print $fh YAML::Syck::DumpYAML($_[0]);
+            print {$fh} YAML::Syck::DumpYAML($_[0]);
         }
         close $fh;
     }
@@ -118,13 +118,16 @@ sub DumpFile {
 
 sub LoadFile {
     my $file = shift;
-    if(!-e $file || -z $file ) {
-        die("Cannot load empty file");
-    };
     if ( _is_openhandle($file) ) {
-        Load(do { local $/; <$file> });
+      if( -z $file ) {
+          die("Cannot load an empty file");
+      };
+      Load(do { local $/; <$file> });
     }
     else {
+      if(!-e $file || -z $file) {
+	die("'$file' is empty or non-existant");
+      }
         open(my $fh, '<', $file) or die "Cannot read from $file: $!";
         Load(do { local $/; <$fh> });
     }
