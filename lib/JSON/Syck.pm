@@ -5,7 +5,7 @@ use Exporter;
 use YAML::Syck ();
 
 BEGIN {
-    $VERSION    = '1.21';
+    $VERSION    = '1.22_01';
     @EXPORT_OK  = qw( Load Dump LoadFile DumpFile DumpInto );
     @ISA        = 'Exporter';
     *Load       = \&YAML::Syck::LoadJSON;
@@ -41,7 +41,7 @@ sub LoadFile {
     }
     else {
         if(!-e $file || -z $file) {
-	    die("'$file' is non-existant or empty");
+	    die("'$file' is non-existent or empty");
 	}
         open(my $fh, '<', $file) or die "Cannot read from $file: $!";
         YAML::Syck::LoadJSON(do { local $/; <$fh> });

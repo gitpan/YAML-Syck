@@ -13,7 +13,7 @@ use 5.006;
 use Exporter;
 
 BEGIN {
-    $VERSION   = '1.21';
+    $VERSION   = '1.22_01';
     @EXPORT    = qw( Dump Load DumpFile LoadFile );
     @EXPORT_OK = qw( DumpInto );
     @ISA       = qw( Exporter );
@@ -121,7 +121,7 @@ sub LoadFile {
     }
     else {
       if(!-e $file || -z $file) {
-	die("'$file' is empty or non-existant");
+	die("'$file' is empty or non-existent");
       }
         open(my $fh, '<', $file) or die "Cannot read from $file: $!";
         Load(do { local $/; <$fh> });
@@ -243,8 +243,12 @@ both C<$YAML::Syck::LoadCode> and C<$YAML::Syck::DumpCode> to true.
 
 =head2 $YAML::Syck::LoadBlessed
 
-Defaults to true. Setting this to a false value will prevent C<Load> from
-blessing tag names that do not begin with C<!!perl> or C<!perl>; see below.
+Defaults to true. Setting to false will block YAML::Syck from doing ANY
+blessing. This is an interface change since 1.21. The variable name was
+misleading, implying that no blessing would happen when in fact it did.
+
+Prior to 1.22, setting this to a false value only prevented C<Load> from
+blessing tag names that did not begin with C<!!perl> or C<!perl>;.
 
 =head1 BUGS
 
@@ -268,8 +272,7 @@ the C<!hs/foo> and C<!!hs/Foo> tags are blessed into C<hs::Foo>.  Note that
 this holds true even if the tag contains non-word characters; for example,
 C<!haskell.org/Foo> is blessed into C<haskell.org::Foo>.  Please use
 L<Class::Rebless> to cast it into other user-defined packages. You can also
-set the LoadBlessed flag false to disable blessing tag names that do not begin
-with C<!!perl> or C<!perl>.
+set the LoadBlessed flag false to disable all blessing.
 
 This module has L<a lot of known
 issues|https://rt.cpan.org/Public/Dist/Display.html?Name=YAML-Syck>
