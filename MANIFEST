@@ -20,6 +20,7 @@ inc/Module/Install/WriteAll.pm
 inc/parent.pm
 inc/PerlIO.pm
 inc/Test/Builder.pm
+inc/Test/Builder/IO/Scalar.pm
 inc/Test/Builder/Module.pm
 inc/Test/More.pm
 lib/JSON/Syck.pm
@@ -64,6 +65,7 @@ t/json-numbers.t
 t/json-refs.t
 t/json-singlequote.t
 t/leak.t
+t/load-blessed.t
 t/meta.t
 t/TestYAML.pm
 t/yaml-alias.t
@@ -72,4 +74,5 @@ t/yaml-dumpinto.t
 t/yaml-implicit-warnings.t
 t/yaml-str-colon-first.t
 t/yaml-tie.t
+t/yaml-utf.t
 token.c
