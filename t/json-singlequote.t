@@ -11,12 +11,12 @@ use JSON::Syck;
     my $dump;
 
     $dump = JSON::Syck::Dump(q{Some string});
-    is($dump, q{'Some string'});
+    is( $dump, q{'Some string'} );
 
     #Test escaping
     my $thing = q{I'm sorry, Dave.};
     $dump = JSON::Syck::Dump($thing);
-    is(JSON::Syck::Load($dump), $thing);
+    is( JSON::Syck::Load($dump), $thing );
 }
 
 {
@@ -25,12 +25,12 @@ use JSON::Syck;
     my $dump;
 
     $dump = JSON::Syck::Dump(q{Some string});
-    is($dump, q{"Some string"});
+    is( $dump, q{"Some string"} );
 
     #Test escaping
     my $thing = q{I'm sorry, Dave.};
     $dump = JSON::Syck::Dump($thing);
-    is(JSON::Syck::Load($dump), $thing);
+    is( JSON::Syck::Load($dump), $thing );
 }
 
 {

@@ -1,30 +1,31 @@
 package YAML::Syck;
+
 # See documentation after the __END__ mark.
 
 use strict;
 use vars qw(
-    @ISA @EXPORT @EXPORT_OK $VERSION
-    $Headless $SortKeys $SingleQuote
-    $ImplicitBinary $ImplicitTyping $ImplicitUnicode 
-    $UseCode $LoadCode $DumpCode
-    $DeparseObject $LoadBlessed
+  @ISA @EXPORT @EXPORT_OK $VERSION
+  $Headless $SortKeys $SingleQuote
+  $ImplicitBinary $ImplicitTyping $ImplicitUnicode
+  $UseCode $LoadCode $DumpCode
+  $DeparseObject $LoadBlessed
 );
 use 5.006;
 use Exporter;
 
 BEGIN {
-    $VERSION   = '1.23';
+    $VERSION   = '1.24_01';
     @EXPORT    = qw( Dump Load DumpFile LoadFile );
     @EXPORT_OK = qw( DumpInto );
     @ISA       = qw( Exporter );
 
-    $SortKeys = 1;
+    $SortKeys    = 1;
     $LoadBlessed = 1;
 
     local $@;
     eval {
         require XSLoader;
-        XSLoader::load(__PACKAGE__, $VERSION);
+        XSLoader::load( __PACKAGE__, $VERSION );
         1;
     } or do {
         require DynaLoader;
@@ -35,26 +36,26 @@ BEGIN {
 }
 
 use constant QR_MAP => {
-    ''   => sub { qr{$_[0]}     }, 
-    x    => sub { qr{$_[0]}x    }, 
-    i    => sub { qr{$_[0]}i    }, 
-    s    => sub { qr{$_[0]}s    }, 
-    m    => sub { qr{$_[0]}m    }, 
-    ix   => sub { qr{$_[0]}ix   }, 
-    sx   => sub { qr{$_[0]}sx   }, 
-    mx   => sub { qr{$_[0]}mx   }, 
-    si   => sub { qr{$_[0]}si   }, 
-    mi   => sub { qr{$_[0]}mi   }, 
-    ms   => sub { qr{$_[0]}sm   }, 
-    six  => sub { qr{$_[0]}six  }, 
-    mix  => sub { qr{$_[0]}mix  }, 
-    msx  => sub { qr{$_[0]}msx  }, 
-    msi  => sub { qr{$_[0]}msi  }, 
-    msix => sub { qr{$_[0]}msix }, 
+    ''   => sub { qr{$_[0]} },
+    x    => sub { qr{$_[0]}x },
+    i    => sub { qr{$_[0]}i },
+    s    => sub { qr{$_[0]}s },
+    m    => sub { qr{$_[0]}m },
+    ix   => sub { qr{$_[0]}ix },
+    sx   => sub { qr{$_[0]}sx },
+    mx   => sub { qr{$_[0]}mx },
+    si   => sub { qr{$_[0]}si },
+    mi   => sub { qr{$_[0]}mi },
+    ms   => sub { qr{$_[0]}sm },
+    six  => sub { qr{$_[0]}six },
+    mix  => sub { qr{$_[0]}mix },
+    msx  => sub { qr{$_[0]}msx },
+    msi  => sub { qr{$_[0]}msi },
+    msix => sub { qr{$_[0]}msix },
 };
 
 sub __qr_helper {
-    if ($_[0] =~ /\A  \(\?  ([ixsm]*)  (?:-  (?:[ixsm]*))?  : (.*) \)  \z/x) {
+    if ( $_[0] =~ /\A  \(\?  ([ixsm]*)  (?:-  (?:[ixsm]*))?  : (.*) \)  \z/x ) {
         my $sub = QR_MAP()->{$1} || QR_MAP()->{''};
         &$sub($2);
     }
@@ -64,13 +65,14 @@ sub __qr_helper {
 }
 
 sub Dump {
-    $#_ ? join('', map { YAML::Syck::DumpYAML($_) } @_)
-        : YAML::Syck::DumpYAML($_[0]);
+    $#_
+      ? join( '', map { YAML::Syck::DumpYAML($_) } @_ )
+      : YAML::Syck::DumpYAML( $_[0] );
 }
 
 sub Load {
     if (wantarray) {
-        my ($rv) = YAML::Syck::LoadYAML($_[0]);
+        my ($rv) = YAML::Syck::LoadYAML( $_[0] );
         @{$rv};
     }
     else {
@@ -81,35 +83,36 @@ sub Load {
 
 sub _is_glob {
     my $h = shift;
-    
-    return 1 if(ref($h) eq 'GLOB');
-    return 1 if(ref(\$h) eq 'GLOB');
-    return 1 if(ref($h) =~ m/^IO::/);
 
-    return;    
+    return 1 if ( ref($h) eq 'GLOB' );
+    return 1 if ( ref( \$h ) eq 'GLOB' );
+    return 1 if ( ref($h) =~ m/^IO::/ );
+
+    return;
 }
 
 sub DumpFile {
     my $file = shift;
     if ( _is_glob($file) ) {
         for (@_) {
-            my $err = YAML::Syck::DumpYAMLFile($_, $file);
+            my $err = YAML::Syck::DumpYAMLFile( $_, $file );
             if ($err) {
-                $! = 0+$err;
+                $! = 0 + $err;
                 die "Error writing to filehandle $file: $!\n";
             }
         }
-    } else {
-        open(my $fh, '>', $file) or die "Cannot write to $file: $!";
+    }
+    else {
+        open( my $fh, '>', $file ) or die "Cannot write to $file: $!";
         for (@_) {
-            my $err = YAML::Syck::DumpYAMLFile($_, $fh);
+            my $err = YAML::Syck::DumpYAMLFile( $_, $fh );
             if ($err) {
-                $! = 0+$err;
+                $! = 0 + $err;
                 die "Error writing to file $file: $!\n";
             }
         }
         close $fh
-            or die "Error writing to file $file: $!\n";
+          or die "Error writing to file $file: $!\n";
     }
     return 1;
 }
@@ -117,21 +120,25 @@ sub DumpFile {
 sub LoadFile {
     my $file = shift;
     if ( _is_glob($file) ) {
-      Load(do { local $/; <$file> });
+        Load(
+            do { local $/; <$file> }
+        );
     }
     else {
-      if(!-e $file || -z $file) {
-	die("'$file' is empty or non-existent");
-      }
-        open(my $fh, '<', $file) or die "Cannot read from $file: $!";
-        Load(do { local $/; <$fh> });
+        if ( !-e $file || -z $file ) {
+            die("'$file' is empty or non-existent");
+        }
+        open( my $fh, '<', $file ) or die "Cannot read from $file: $!";
+        Load(
+            do { local $/; <$fh> }
+        );
     }
 }
 
 sub DumpInto {
     my $bufref = shift;
-    (ref $bufref) or die "DumpInto not given reference to output buffer\n";
-    YAML::Syck::DumpYAMLInto($_, $bufref) for @_;
+    ( ref $bufref ) or die "DumpInto not given reference to output buffer\n";
+    YAML::Syck::DumpYAMLInto( $_, $bufref ) for @_;
     1;
 }
 

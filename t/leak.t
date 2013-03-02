@@ -92,8 +92,10 @@ result: !perl/code: '{ 42 + + 54ih a; $" }'
 
     {
         local $SIG{__WARN__} = sub { };
-        ok( !eval { Load($yaml) },
-            "Load failed on code syntax error (expected)" );
+        ok(
+            !eval { Load($yaml) },
+            "Load failed on code syntax error (expected)"
+        );
 
         $before = Devel::Leak::NoteSV($handle);
         eval { Load($yaml) } for ( 1 .. 10 );

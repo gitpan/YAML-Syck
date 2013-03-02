@@ -11,16 +11,16 @@ sub import {
     @_ or return;
     plan @_;
 
-    *::ok = *ok;
-    *::is = *is;
+    *::ok        = *ok;
+    *::is        = *is;
     *::is_deeply = *is_deeply;
     *::roundtrip = *roundtrip;
-    *::Dump = *YAML::Syck::Dump;
-    *::Load = *YAML::Syck::Load;
+    *::Dump      = *YAML::Syck::Dump;
+    *::Load      = *YAML::Syck::Load;
 }
 
 sub roundtrip {
-    @_ = (YAML::Syck::Load(YAML::Syck::Dump($_[0])), $_[0]);
+    @_ = ( YAML::Syck::Load( YAML::Syck::Dump( $_[0] ) ), $_[0] );
     goto &main::is;
 }
 

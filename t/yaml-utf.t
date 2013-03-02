@@ -16,7 +16,7 @@ use YAML::Syck;
 
     my $thing = "♥\000";
     $dump = YAML::Syck::Dump($thing);
-    is($dump, '--- "♥\0"'."\n");
+    is( $dump, '--- "♥\0"' . "\n" );
 }
 
 {
@@ -25,7 +25,7 @@ use YAML::Syck;
 
     my $thing = "♥";
     $dump = YAML::Syck::Dump($thing);
-    is($dump, '--- ♥'."\n");
+    is( $dump, '--- ♥' . "\n" );
 }
 
 {
@@ -33,5 +33,5 @@ use YAML::Syck;
 
     my $thing = "\000";
     $dump = YAML::Syck::Dump($thing);
-    is($dump, '--- "\0"'."\n");
+    is( $dump, '--- "\0"' . "\n" );
 }

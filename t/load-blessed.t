@@ -58,12 +58,10 @@ foreach my $t (@tests) {
           if $t->{perl_version} && $] < $t->{perl_version};
 
         $YAML::Syck::LoadBlessed = 1;
-        is ref Load( Dump( $t->{object}->() ) ) => $t->{loadblessed_enabled},
-          "$t->{msg} [ LoadBlessed = 1 ]";
+        is ref Load( Dump( $t->{object}->() ) ) => $t->{loadblessed_enabled}, "$t->{msg} [ LoadBlessed = 1 ]";
 
         $YAML::Syck::LoadBlessed = 0;
-        is ref Load( Dump( $t->{object}->() ) ) => $t->{loadblessed_disabled},
-          "$t->{msg} [ LoadBlessed = 0 ]";
+        is ref Load( Dump( $t->{object}->() ) ) => $t->{loadblessed_disabled}, "$t->{msg} [ LoadBlessed = 0 ]";
     }
 }
 
