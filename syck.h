@@ -99,10 +99,18 @@ extern "C" {
  * Node definitions
  */
 #ifndef ST_DATA_T_DEFINED
+#ifdef MINGW64
+typedef long long st_data_t;
+#else
 typedef long st_data_t;
 #endif
+#endif
 
+#ifdef MINGW64
+#define SYMID unsigned long long
+#else
 #define SYMID unsigned long
+#endif
 
 typedef struct _syck_node SyckNode;
 
