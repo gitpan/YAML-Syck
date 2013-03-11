@@ -1,3 +1,7 @@
+[Changes for 1.25 - 2013-03-10]
+
+* Bump version number and release to fix a MANIFEST mistake in 1.24
+
 [Changes for 1.24 - 2013-03-07]
 
 * Tests all green on CPAN Testers. releasing to public.
