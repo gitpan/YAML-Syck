@@ -1,3 +1,7 @@
+[Changes for 1.26 - 2013-05-20]
+
+* Resolve RT#84882 and RT#84466 hash randomisation in yaml-alias.t on perl 5.18.0
+
 [Changes for 1.25 - 2013-03-10]
 
 * Bump version number and release to fix a MANIFEST mistake in 1.24
