@@ -5,7 +5,7 @@ use Exporter;
 use YAML::Syck ();
 
 BEGIN {
-    $VERSION   = '1.27';
+    $VERSION   = '1.28_01';
     @EXPORT_OK = qw( Load Dump LoadFile DumpFile DumpInto );
     @ISA       = 'Exporter';
     *Load      = \&YAML::Syck::LoadJSON;
@@ -122,7 +122,7 @@ dereferences to get the actual scalar value.
 
 JSON::Syck raises an exception when you pass in circular references.
 
-If you want to serialize self refernecing stuff, you should use
+If you want to serialize self referencing stuff, you should use
 YAML which supports it.
 
 =head2 SUBROUTINE REFERENCE

@@ -19,6 +19,7 @@ inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 inc/parent.pm
 inc/PerlIO.pm
+inc/Scalar/Util.pm
 inc/Test/Builder.pm
 inc/Test/Builder/IO/Scalar.pm
 inc/Test/Builder/Module.pm

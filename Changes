@@ -1,3 +1,7 @@
+[Changes for 1.28_01 - 2014-06-11]
+
+* Update inc modules to avoid precedence warnings in newer perl: RT 87034
+
 [Changes for 1.27 - 2013-05-20]
 
 * Resolve RT#84466 not fixed in 1.26 It failed about 10% of the time.
