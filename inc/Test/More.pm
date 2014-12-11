@@ -10,7 +10,7 @@ use warnings;
 # We use a lot of subroutine prototypes
 ## no critic (Subroutines::ProhibitSubroutinePrototypes)
 
-# Can't use Carp because it might cause use_ok() to accidentally succeed
+# Can't use Carp because it might cause C<use_ok()> to accidentally succeed
 # even though the module being used forgot to use Carp.  Yes, this
 # actually happened.
 sub _carp {
@@ -18,7 +18,7 @@ sub _carp {
     return warn @_, " at $file line $line\n";
 }
 
-our $VERSION = '1.001003';
+our $VERSION = '1.001009';
 $VERSION = eval $VERSION;    ## no critic (BuiltinFunctions::ProhibitStringyEval)
 
 use Test::Builder::Module 0.99;
@@ -103,8 +103,9 @@ sub isnt ($$;$) {
 }
 
 *isn't = \&isnt;
+# ' to unconfuse syntax higlighters
 
-#line 415
+#line 416
 
 sub like ($$;$) {
     my $tb = Test::More->builder;
@@ -112,7 +113,7 @@ sub like ($$;$) {
     return $tb->like(@_);
 }
 
-#line 430
+#line 431
 
 sub unlike ($$;$) {
     my $tb = Test::More->builder;
@@ -120,7 +121,7 @@ sub unlike ($$;$) {
     return $tb->unlike(@_);
 }
 
-#line 476
+#line 477
 
 sub cmp_ok($$$;$) {
     my $tb = Test::More->builder;
@@ -128,7 +129,7 @@ sub cmp_ok($$$;$) {
     return $tb->cmp_ok(@_);
 }
 
-#line 511
+#line 512
 
 sub can_ok ($@) {
     my( $proto, @methods ) = @_;
@@ -162,7 +163,7 @@ sub can_ok ($@) {
     return $ok;
 }
 
-#line 577
+#line 578
 
 sub isa_ok ($$;$) {
     my( $thing, $class, $thing_name ) = @_;
@@ -244,7 +245,7 @@ WHOA
     return $ok;
 }
 
-#line 678
+#line 679
 
 sub new_ok {
     my $tb = Test::More->builder;
@@ -269,7 +270,7 @@ sub new_ok {
     return $obj;
 }
 
-#line 764
+#line 765
 
 sub subtest {
     my ($name, $subtests) = @_;
@@ -278,7 +279,7 @@ sub subtest {
     return $tb->subtest(@_);
 }
 
-#line 788
+#line 789
 
 sub pass (;$) {
     my $tb = Test::More->builder;
@@ -292,7 +293,7 @@ sub fail (;$) {
     return $tb->ok( 0, @_ );
 }
 
-#line 841
+#line 842
 
 sub require_ok ($) {
     my($module) = shift;
@@ -337,7 +338,7 @@ sub _is_module_name {
 }
 
 
-#line 935
+#line 936
 
 sub use_ok ($;@) {
     my( $module, @imports ) = @_;
@@ -405,7 +406,7 @@ sub _eval {
 }
 
 
-#line 1036
+#line 1037
 
 our( @Data_Stack, %Refs_Seen );
 my $DNE = bless [], 'Does::Not::Exist';
@@ -512,7 +513,7 @@ sub _type {
     return '';
 }
 
-#line 1196
+#line 1197
 
 sub diag {
     return Test::More->builder->diag(@_);
@@ -522,13 +523,13 @@ sub note {
     return Test::More->builder->note(@_);
 }
 
-#line 1222
+#line 1223
 
 sub explain {
     return Test::More->builder->explain(@_);
 }
 
-#line 1288
+#line 1289
 
 ## no critic (Subroutines::RequireFinalReturn)
 sub skip {
@@ -556,7 +557,7 @@ sub skip {
     last SKIP;
 }
 
-#line 1372
+#line 1373
 
 sub todo_skip {
     my( $why, $how_many ) = @_;
@@ -577,7 +578,7 @@ sub todo_skip {
     last TODO;
 }
 
-#line 1427
+#line 1428
 
 sub BAIL_OUT {
     my $reason = shift;
@@ -586,7 +587,7 @@ sub BAIL_OUT {
     $tb->BAIL_OUT($reason);
 }
 
-#line 1466
+#line 1467
 
 #'#
 sub eq_array {
@@ -726,7 +727,7 @@ WHOA
     }
 }
 
-#line 1613
+#line 1614
 
 sub eq_hash {
     local @Data_Stack = ();
@@ -761,7 +762,7 @@ sub _eq_hash {
     return $ok;
 }
 
-#line 1672
+#line 1673
 
 sub eq_set {
     my( $a1, $a2 ) = @_;
@@ -786,6 +787,6 @@ sub eq_set {
     );
 }
 
-#line 1919
+#line 1946
 
 1;

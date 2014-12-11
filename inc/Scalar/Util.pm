@@ -1,9 +1,9 @@
 #line 1
-# Scalar::Util.pm
-#
 # Copyright (c) 1997-2007 Graham Barr <gbarr@pobox.com>. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
+#
+# Maintained since 2013 by Paul Evans <leonerd@leonerd.org.uk>
 
 package Scalar::Util;
 
@@ -13,21 +13,11 @@ require List::Util; # List::Util loads the XS
 
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(
-  blessed
-  dualvar
-  isdual
-  isvstring
-  isweak
-  looks_like_number
-  openhandle
-  readonly
-  refaddr
-  reftype
-  set_prototype
-  tainted
-  weaken
+  blessed refaddr reftype weaken unweaken isweak
+
+  dualvar isdual isvstring looks_like_number openhandle readonly set_prototype tainted
 );
-our $VERSION    = "1.27";
+our $VERSION    = "1.38";
 $VERSION   = eval $VERSION;
 
 our @EXPORT_FAIL;
@@ -60,4 +50,6 @@ sub export_fail {
 
 __END__
 
-#line 303
+#line 72
+
+#line 321

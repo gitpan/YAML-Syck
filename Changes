@@ -1,3 +1,7 @@
+[Changes for 1.28 - 2014-12-11]
+
+* Bump to release version 1.28 for production release to CPAN
+
 [Changes for 1.28_01 - 2014-06-11]
 
 * Update inc modules to avoid precedence warnings in newer perl: RT 87034
