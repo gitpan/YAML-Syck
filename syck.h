@@ -39,6 +39,7 @@
 #endif
 
 #include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <ctype.h>
 #ifdef HAVE_ST_H
@@ -99,18 +100,10 @@ extern "C" {
  * Node definitions
  */
 #ifndef ST_DATA_T_DEFINED
-#ifdef MINGW64
-typedef long long st_data_t;
-#else
-typedef long st_data_t;
-#endif
+typedef uintptr_t st_data_t;
 #endif
 
-#ifdef MINGW64
-#define SYMID unsigned long long
-#else
-#define SYMID unsigned long
-#endif
+#define SYMID uintptr_t
 
 typedef struct _syck_node SyckNode;
 
@@ -411,7 +404,7 @@ void syck_emitter_handler( SyckEmitter *, SyckEmitterHandler );
 void syck_free_emitter( SyckEmitter * );
 void syck_emitter_clear( SyckEmitter * );
 void syck_emitter_write( SyckEmitter *, const char *, long );
-void syck_emitter_escape( SyckEmitter *, char *, long );
+void syck_emitter_escape( SyckEmitter *, unsigned char *, long );
 void syck_emitter_flush( SyckEmitter *, long );
 void syck_emit( SyckEmitter *, st_data_t );
 void syck_emit_scalar( SyckEmitter *, char *, enum scalar_style, int, int, char, char *, long );

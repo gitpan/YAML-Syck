@@ -1,3 +1,8 @@
+[Changes for 1.29_01 - 2014-12-14]
+
+* Experimentally try patch from RT 83825. Will release if no test failures or complaints.
+* Fix crash in syck_emit on platforms with long long pointers
+
 [Changes for 1.28 - 2014-12-11]
 
 * Bump to release version 1.28 for production release to CPAN
